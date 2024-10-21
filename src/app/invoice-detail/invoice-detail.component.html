@@ -1,0 +1,105 @@
+<h2>Chi tiết hóa đơn</h2>
+<div *ngIf="invoice">
+  <p><strong>Khách hàng:</strong> {{ invoice.customerName }}</p>
+  <p><strong>Ngày:</strong> {{ invoice.date }}</p>
+
+  <!-- Table for Invoice Items -->
+  <table style="width: 100%; border-collapse: collapse;">
+    <thead>
+      <tr>
+        <th style="border-bottom: 1px dashed black; text-align: left;">Sản phẩm</th>
+        <th style="border-bottom: 1px dashed black; text-align: left;">Số lượng</th>
+        <th style="border-bottom: 1px dashed black; text-align: left;">Giá bán</th>
+        <th style="border-bottom: 1px dashed black; text-align: left;">Thành tiền</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Iterate over each item in the invoice -->
+      <ng-container *ngFor="let item of invoice.items">
+        <!-- First Row: Product Name -->
+        <tr>
+          <td colspan="4">{{ item.productName }}</td>
+        </tr>
+        <!-- Second Row: Quantity, Unit Price, and Total Price -->
+        <tr>
+            <td></td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.unitPrice | numberFormat }}</td>
+          <td>{{ item.totalPrice | numberFormat }}</td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+
+  <p><strong>Tổng số lượng sản phẩm:</strong> {{ invoice.quantityAll }}</p>
+  <p><strong>Tổng tiền:</strong> {{ invoice.total | numberFormat }}</p>
+  <p>
+    <strong>Phương thức thanh toán:</strong> {{ invoice.paymentMethod }}
+  </p>
+
+  <button (click)="print()">In hóa đơn</button>
+
+  <!-- Printable Area -->
+  <div id="printArea" class="receipt no-print">
+    <div>
+        <div class="header">
+          <h3>CỬA HÀNG HOÀNG DIỆU</h3>
+        <p>
+            Địa chỉ: Nhà Ngang, Hòa Chánh, U Minh Thương, Kiên Giang
+          </p>
+          <p>Điện thoại: 0123 456 789</p>
+      </div>
+      
+    </div>
+    <hr />
+    <div class="info">
+      <p><strong>Mã hóa đơn:</strong> {{ invoice.id }}</p>
+      <p><strong>Ngày mua:</strong> {{ invoice.date }}</p>
+      <p><strong>Khách hàng:</strong> {{ invoice.customerName }}</p>
+    </div>
+
+    <!-- Printable Table with Two Rows per Product -->
+    <table>
+        <thead>
+            <tr>
+                
+              <th>Số lượng</th>
+              <th>Giá bán</th>
+              <th>Thành tiền</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of invoice.items">
+              <tr>
+                <td colspan="3">{{ item.productName }}</td>
+              </tr>
+
+              <tr>
+                  
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.unitPrice | numberFormat }}</td>
+                <td>{{ item.totalPrice | numberFormat }}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+    </table>
+    <hr />
+    <div class="total">
+        <p>
+            <strong>Tổng số lượng:</strong> {{ invoice.quantityAll }}
+          </p>
+          <p>
+            <strong>Thành tiền:</strong> {{ invoice.total | numberFormat }}
+          </p>
+          <p>( {{ totalInWords }})</p>
+          <p>
+            <strong>Phương thức thanh toán:</strong> {{ invoice.paymentMethod }}
+          </p>
+    </div>
+    
+    <hr />
+    <div class="footer">
+        <p>Cảm ơn quý khách! Hẹn gặp lại!</p>
+    </div>
+  </div>
+</div>
